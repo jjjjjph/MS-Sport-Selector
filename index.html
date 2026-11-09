@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Sport Selector</title>
+    <style>
+        :root {
+            --primary: #673ab7;
+            --primary-light: #f0ebf8;
+            --text-dark: #202124;
+            --text-muted: #70757a;
+            --bg-page: #f0f3f4;
+            --bg-card: #ffffff;
+            --border-color: #dadce0;
+            --radius: 8px;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 640px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            border-top: 10px solid var(--primary);
+            padding: 28px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        p.description {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .option-label:hover {
+            background-color: #f8f9fa;
+            border-color: #b0b0b0;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 14px;
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .option-label.selected {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-prev {
+            background-color: transparent;
+            color: var(--primary);
+        }
+
+        .btn-prev:hover {
+            background-color: rgba(103, 58, 183, 0.08);
+        }
+
+        .btn-next {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .btn-next:hover {
+            background-color: #5b32a1;
+        }
+
+        button:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-start {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 32px;
+            font-size: 16px;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .btn-start:hover {
+            background-color: #5b32a1;
+        }
+
+        /* Result Styles */
+        .result-title {
+            font-size: 22px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .sport-badge {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(103, 58, 183, 0.2);
+        }
+
+        .restart-btn {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            width: 100%;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+
+        .restart-btn:hover {
+            background-color: #e5daf3;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- SECTION 1: Start Screen (Welcome/Intro) -->
+    <div class="step-panel active" id="step-1">
+        <div class="card">
+            <h1>Student Sport Selector</h1>
+            <p class="description">Welcome! This interactive selector matches your personal physical preferences, environmental styles, and gameplay choices to the ideal sport or athletic track.</p>
+            <p class="description" style="margin-top: 12px;">Answer a few branching choice questions to find your perfect match.</p>
+            <button class="btn-start" onclick="goToStep(2)">Get Started</button>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Core Preference -->
+    <div class="step-panel" id="step-2">
+        <div class="card">
+            <div class="question-title">What kind of sport environment sounds like the most fun?</div>
+            <div class="options-group">
+                <label class="option-label">
+                    <input type="radio" name="core_pref" value="team">
+                    Working together with teammates
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="core_pref" value="individual">
+                    Relying purely on my own individual skills
+                </label>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn-prev" onclick="goBack()">Back</button>
+            <button class="btn-next" onclick="navigate('core')" disabled id="btn-core">Next</button>
+        </div>
+    </div>
+
+    <!-- SECTION 3: Team Sports Path -->
+    <div class="step-panel" id="step-3">
+        <div class="card">
+            <div class="question-title">What type of gameplay do you prefer?</div>
+            <div class="options-group">
+                <label class="option-label">
+                    <input type="radio" name="team_path" value="invasion">
+                    Directly invading the opponent's side to score
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="team_path" value="net">
+                    Staying on our own side divided by a net
+                </label>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn-prev" onclick="goBack()">Back</button>
+            <button class="btn-next" onclick="navigate('team-path')" disabled id="btn-team-path">Next</button>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Coordination (Team Invasion Route) -->
+    <div class="step-panel" id="step-4">
+        <div class="card">
+            <div class="question-title">What type of physical coordination do you feel most confident using?</div>
+            <div class="options-group">
+                <label class="option-label">
+                    <input type="radio" name="coordination" value="hand-eye">
+                    Hand-eye coordination
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="coordination" value="foot-eye">
+                    Foot-eye coordination
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="coordination" value="whole-body">
+                    Whole body coordination
+                </label>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn-prev" onclick="goBack()">Back</button>
+            <button class="btn-next" onclick="navigate('coordination')" disabled id="btn-coordination">Finish</button>
+        </div>
+    </div>
+
+    <!-- SECTION 5: Team Pace (Team Net Route) -->
+    <div class="step-panel" id="step-5">
+        <div class="card">
+            <div class="question-title">How do you feel about high-speed running and physical contact?</div>
+            <div class="options-group">
+                <label class="option-label">
+                    <input type="radio" name="team_pace" value="high">
+                    Love it!!
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="team_pace" value="low">
+                    Prefer strategic, non-contact positioning
+                </label>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn-prev" onclick="goBack()">Back</button>
+            <button class="btn-next" onclick="navigate('team-pace')" disabled id="btn-team-pace">Next</button>
+        </div>
+    </div>
+
+    <!-- SECTION 6: Team Environment (High-Pace Net Route) -->
+    <div class="step-panel" id="step-6">
+        <div class="card">
