@@ -25,7 +25,7 @@ This project is built using standard, lightweight web technologies to keep it li
 * **CSS3** for styling a smooth, readable, and modern user experience.
 * **JavaScript** to handle the decision tree logic and compute your sport match dynamically.
 
-## Give It a Spin!
+## Give It a Go!
 
 Want to try it out on your local machine? It takes less than a minute:
 
